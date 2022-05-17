@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+    Signin
+{% endblock %}
+
+{% block content %}
+<h3 align ="center">Login</h3>
+<form action="/signin" method="POST">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.username) }}
+    {{ wtf.form_field(form.password) }}
+    <p><i><a href="{{url_for('user.reset_request') }}">Forget the password</a></i></p>
+    <button type="submit" class="btn btn-outline-info">
+        LOGIN
+    </button>
+</form>
+{% endblock %}

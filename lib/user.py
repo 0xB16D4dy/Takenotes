@@ -1,12 +1,13 @@
-import email
 from flask import Blueprint, redirect, render_template, request, flash, session, url_for
 from .models import User
-import re 
-from sqlalchemy.sql.expression import false
-from werkzeug.security import generate_password_hash, check_password_hash
-from . import db
+from . import db, mail
+from .forms import *
+from flask_mail import Message
 
+import re 
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+# from flask_wtf import FlaskForm
 user = Blueprint("user", __name__)
 
 def is_email_address_valid(email):
@@ -15,59 +16,166 @@ def is_email_address_valid(email):
         return False
     return True
 
+def send_reset_email(user):
+    token = user.get_reset_token()
+    # from . import mail
+    msg =  Message("Password Reset Request", 
+                    sender="hlhphuoc170821@gmail.com", 
+                    recipients = [user.email])
+    msg.body =  f''' To reset your password, visit the following link:
+{url_for("user.reset_token", token = token, _external=True)}
 
-@user.route('/register', methods=["GET","POST"])
-def register():
-    if request.method == "POST":
-        email = request.form.get("email")
-        user_name = request.form.get("user_name")
-        password = request.form.get("password")
-        confirm_password = request.form.get("confirm_password")
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
     
-        user = User.query.filter_by(email = email).first()
+
+# @user.route('/register', methods=["GET","POST"])
+# def register():
+#     if request.method == "POST":
+#         email = request.form.get("email")
+#         user_name = request.form.get("user_name")
+#         password = request.form.get("password")
+#         confirm_password = request.form.get("confirm_password")
+    
+#         user = User.query.filter_by(email = email).first()
+#         if user:
+#             flash("Email existed!", category="danger")
+#         elif not is_email_address_valid(email):
+#             flash("Please enter a valid email address", category="danger")
+#         elif len(password) < 7:
+#             flash("Please enter length password > 7 ", category="danger")
+#         elif password != confirm_password:
+#             flash("Password doesn't match!", category="danger")
+#         else:
+#             password = generate_password_hash(password, method="sha256")
+#             new_user = User(email, password, user_name)
+#             try:
+#                 db.session.add(new_user)
+#                 db.session.commit()
+#                 flash("User created!", category="success")
+#                 login_user(user, remember=True)
+#                 return redirect(url_for("views.home"))
+#             except:
+#                 "Create failed!"
+#     return render_template('register.html', user=current_user)
+
+
+# @user.route('/login', methods=["GET","POST"])
+# def login():
+#     if request.method == "POST":
+#         email = request.form.get("email")
+#         password = request.form.get("password")
+#         user = User.query.filter_by(email = email).first()
+#         if user:
+#             if check_password_hash(user.password, password):
+#                 session.permanent = True
+#                 login_user(user, remember=True)
+#                 flash("Logged in Success!",category="success")
+#                 return redirect(url_for('views.home'))
+#             else:
+#                 flash("Wrong password, please try again!", category="danger")
+#         else:
+#             flash("User doesn't exist!", category="danger")
+#     return render_template('login.html', user=current_user)
+
+
+
+@user.route('/signup', methods=["GET","POST"])
+def signup():
+    if current_user.is_authenticated:
+        return  redirect(url_for("views.home"))
+    form = registerForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email = form.email.data).first()
         if user:
-            flash("Email existed!", category="error")
-        elif not is_email_address_valid(email):
-            flash("Please enter a valid email address", category="error")
-        elif len(password) < 7:
-            flash("Please enter length password > 7 ", category="error")
-        elif password != confirm_password:
-            flash("Password doesn't match!", category="error")
+            flash("Email existed!", category="danger")
+        elif not is_email_address_valid(form.email.data):
+            flash("Please enter a valid email address", category="danger")
+        elif len(form.password.data) < 7:
+            flash("Please enter length password > 7 ", category="danger")
+        elif form.password.data != form.confirmpassword.data:
+            flash("Password doesn't match!", category="danger")
         else:
-            password = generate_password_hash(password, method="sha256")
+            email = form.email.data
+            password = generate_password_hash(form.password.data, method="sha256")
+            user_name = form.username.data
+
             new_user = User(email, password, user_name)
             try:
                 db.session.add(new_user)
                 db.session.commit()
                 flash("User created!", category="success")
                 login_user(user, remember=True)
-                return redirect(url_for("views.home"))
+                # return redirect(url_for("views.home"))
+                return "User Created"
             except:
                 "Create failed!"
-    return render_template('register.html', user=current_user)
 
+    return render_template("signup.html", form = form , user= current_user)
 
-@user.route('/login', methods=["GET","POST"])
-def login():
-    if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-        user = User.query.filter_by(email = email).first()
+@user.route('/signin', methods=["GET","POST"])
+def signin():
+    if current_user.is_authenticated:
+        return  redirect(url_for("views.home"))
+    form = loginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(user_name = form.username.data).first()
         if user:
-            if check_password_hash(user.password, password):
+            if check_password_hash(user.password, form.password.data):
                 session.permanent = True
-                login_user(user, remember=True)
-                flash("Logged in Success!",category="success")
-                return redirect(url_for('views.home'))
+                login_user(user, remember = True)
+                # Sửa để không hiện ra next=%2F<account> trên url nữa
+                next_page = request.args.get("netxt")
+                return redirect(next_page) if next_page else redirect(url_for("views.home"))
+                # flash("Logged in Success!",category="success")
+                # return redirect(url_for('views.home'))
             else:
-                flash("Wrong password, please try again!", category="error")
+                flash("Wrong password, please try again!", category="danger")
         else:
-            flash("User doesn't exist!", category="error")
-    return render_template('login.html', user=current_user)
+            flash("User doesn't exist!", category="danger")    
+
+    return render_template("signin.html", form = form , user= current_user)
+
+
+@user.route('/reset_password', methods=["GET","POST"])
+def reset_request():
+    if current_user.is_authenticated:
+        return  redirect(url_for("views.home"))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email = form.email.data).first()
+        send_reset_email(user)
+        flash("An email has been sent with instructions to reset your password.", category = "info")
+        return redirect(url_for("user.signin"))
+    return render_template("reset_request.html", tittle = "Reset Password", form = form, user = current_user)
+
+@user.route('/reset_password/<token>', methods=["GET","POST"])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return  redirect(url_for("views.home"))
+    user = User.verify_reset(token)
+    if user is None:
+        flash("That is an invalid or expired token", category = "warning")
+        return redirect(url_for("user.reset_request"))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        new_password = generate_password_hash(form.password.data, method="sha256")
+        user.password = new_password
+        db.session.commit()
+        flash("Your password has been update! You are now able to log in", category="success")
+        return redirect(url_for("user.signin"))
+    return render_template("reset_with_token.html", tittle = "Reset Password", form = form, user = current_user)
 
 
 @user.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("user.logout"))
+    return redirect(url_for("views.home"))
+
+
+@user.route('/account')
+@login_required
+def account():
+    return render_template("account.html", title = "Account", user = current_user)
