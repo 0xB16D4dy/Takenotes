@@ -5,7 +5,7 @@
 {% block content %}
 <div class="col-right-item">
     <h3 align="center">Register</h3>
-      <form action="{{url_for('user.signup')}}" method="POST">
+      <form action="{{url_for('user.register')}}" method="POST">
         
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
@@ -67,7 +67,7 @@
         </fieldset>
         <button type="submit" class="btn btn-outline-info">SIGN UP</button>
         <small class="text-muted">
-            Already Have An Account? <a class="ml-2" href="{{ url_for('user.signin') }}">Sign In</a>
+            Already Have An Account? <a class="ml-2" href="{{ url_for('user.login') }}">Sign In</a>
         </small>
 
       </form>

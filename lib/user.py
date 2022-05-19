@@ -21,61 +21,9 @@ def send_reset_email(user):
 If you did not make this request then simply ignore this email and no changes will be made.
 '''
     mail.send(msg)
-    
-
-# @user.route('/register', methods=["GET","POST"])
-# def register():
-#     if request.method == "POST":
-#         email = request.form.get("email")
-#         user_name = request.form.get("user_name")
-#         password = request.form.get("password")
-#         confirm_password = request.form.get("confirm_password")
-    
-#         user = User.query.filter_by(email = email).first()
-#         if user:
-#             flash("Email existed!", category="danger")
-#         elif not is_email_address_valid(email):
-#             flash("Please enter a valid email address", category="danger")
-#         elif len(password) < 7:
-#             flash("Please enter length password > 7 ", category="danger")
-#         elif password != confirm_password:
-#             flash("Password doesn't match!", category="danger")
-#         else:
-#             password = generate_password_hash(password, method="sha256")
-#             new_user = User(email, password, user_name)
-#             try:
-#                 db.session.add(new_user)
-#                 db.session.commit()
-#                 flash("User created!", category="success")
-#                 login_user(user, remember=True)
-#                 return redirect(url_for("views.home"))
-#             except:
-#                 "Create failed!"
-#     return render_template('register.html', user=current_user)
-
-
-# @user.route('/login', methods=["GET","POST"])
-# def login():
-#     if request.method == "POST":
-#         email = request.form.get("email")
-#         password = request.form.get("password")
-#         user = User.query.filter_by(email = email).first()
-#         if user:
-#             if check_password_hash(user.password, password):
-#                 session.permanent = True
-#                 login_user(user, remember=True)
-#                 flash("Logged in Success!",category="success")
-#                 return redirect(url_for('views.home'))
-#             else:
-#                 flash("Wrong password, please try again!", category="danger")
-#         else:
-#             flash("User doesn't exist!", category="danger")
-#     return render_template('login.html', user=current_user)
-
-
 
 @user.route('/signup', methods=["GET","POST"])
-def signup():
+def register():
     if current_user.is_authenticated:
         return  redirect(url_for("views.home"))
     form = registerForm()
@@ -107,8 +55,8 @@ def signup():
 
     return render_template("signup.html", form = form , user= current_user)
 
-@user.route('/signin', methods=["GET","POST"])
-def signin():
+@user.route('/sigin', methods=["GET","POST"])
+def login():
     if current_user.is_authenticated:
         return  redirect(url_for("views.home"))
     form = loginForm()
@@ -138,7 +86,7 @@ def reset_request():
         user = User.query.filter_by(email = form.email.data).first()
         send_reset_email(user)
         flash("An email has been sent with instructions to reset your password.", category = "info")
-        return redirect(url_for("user.signin"))
+        return redirect(url_for("user.login"))
     return render_template("reset_request.html", tittle = "Reset Password", form = form, user = current_user)
 
 @user.route('/reset_password/<token>', methods=["GET","POST"])
@@ -169,4 +117,6 @@ def logout():
 @user.route('/account')
 @login_required
 def account():
-    return render_template("account.html", title = "Account", user = current_user)
+    form = UpdateAccountForm()
+    image_file = url_for('static', filename='assets/img/profile_pics/' + current_user.image_file)
+    return render_template("account.html", title = "Account", user = current_user, image_file=image_file, form=form)

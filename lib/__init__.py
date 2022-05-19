@@ -30,7 +30,7 @@ def create_app():
     
    
 
-    from .models import User, Upload
+    from .models import User, Upload, Note
     create_database(app)
 
 

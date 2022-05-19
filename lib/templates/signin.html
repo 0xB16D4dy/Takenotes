@@ -8,7 +8,7 @@
 {% block content %}
 <div class="col-right-item">
     <h3 align ="center">Login</h3>
-    <form action="{{url_for('user.signin')}}" method="POST">
+    <form action="{{url_for('user.login')}}" method="POST">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}
