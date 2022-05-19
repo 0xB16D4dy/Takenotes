@@ -3,18 +3,11 @@ from .models import User
 from . import db, mail
 from .forms import *
 from flask_mail import Message
-
-import re 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 # from flask_wtf import FlaskForm
 user = Blueprint("user", __name__)
 
-def is_email_address_valid(email):
-    """Validate the email address using a regex."""
-    if not re.match("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$", email):
-        return False
-    return True
 
 def send_reset_email(user):
     token = user.get_reset_token()
@@ -94,7 +87,7 @@ def signup():
             flash("Please enter a valid email address", category="danger")
         elif len(form.password.data) < 7:
             flash("Please enter length password > 7 ", category="danger")
-        elif form.password.data != form.confirmpassword.data:
+        elif form.password.data != form.confirm_password.data:
             flash("Password doesn't match!", category="danger")
         else:
             email = form.email.data
@@ -105,7 +98,7 @@ def signup():
             try:
                 db.session.add(new_user)
                 db.session.commit()
-                flash("User created!", category="success")
+                flash(f"User {form.username.data} created!", category="success")
                 login_user(user, remember=True)
                 # return redirect(url_for("views.home"))
                 return "User Created"
@@ -124,16 +117,14 @@ def signin():
         if user:
             if check_password_hash(user.password, form.password.data):
                 session.permanent = True
-                login_user(user, remember = True)
+                login_user(user, remember = form.remember.data)
                 # Sửa để không hiện ra next=%2F<account> trên url nữa
                 next_page = request.args.get("netxt")
                 return redirect(next_page) if next_page else redirect(url_for("views.home"))
                 # flash("Logged in Success!",category="success")
                 # return redirect(url_for('views.home'))
             else:
-                flash("Wrong password, please try again!", category="danger")
-        else:
-            flash("User doesn't exist!", category="danger")    
+                flash("Wrong password, please try again!", category="danger")    
 
     return render_template("signin.html", form = form , user= current_user)
 

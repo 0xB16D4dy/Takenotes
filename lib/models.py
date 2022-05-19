@@ -1,8 +1,9 @@
 import os
-from enum import unique
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from sqlalchemy import false
 from . import db
+from sqlalchemy.sql import func
 
 
 SECRET_KEY = os.environ.get("KEY")
@@ -13,7 +14,9 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String(150),unique = True)
     user_name = db.Column(db.String(150),unique = True)
+    image_file = db.Column(db.String(20), nullable = false, default='default.jpg')
     password = db.Column(db.String(150))
+    notes = db.relationship('Note', backref='author', lazy=True)
 
     
     def __init__(self, email, password, user_name):
@@ -33,7 +36,6 @@ class User(db.Model, UserMixin):
             user_id = s.loads(token)['user_id']
         except:
             return None
-        
         return User.query.get(user_id)
 
     
@@ -45,3 +47,11 @@ class Upload(db.Model):
     def __init__(self, filename, data):
         self.filename = filename
         self.data = data
+
+
+class Note(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(1000))
+    data = db.Column(db.String(10000))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
