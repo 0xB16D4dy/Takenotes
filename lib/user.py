@@ -1,13 +1,30 @@
+from tkinter import Image
 from flask import Blueprint, redirect, render_template, request, flash, session, url_for
 from .models import User
-from . import db, mail
+from . import db, mail, app
+# from .. import app
 from .forms import *
 from flask_mail import Message
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 # from flask_wtf import FlaskForm
+import secrets
+import os
+
 user = Blueprint("user", __name__)
 
+def save_picture(form_picture):
+    # random_hex = secrets.token_hex(8)
+    # _, f_ext = os.path.splitext(form_picture.filename)
+    # picture_fn = random_hex + f_ext
+    picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+form_picture.filename
+    # picture_path = os.path.join(app.root_path, "/static/assets/img/profile_pics/", form_picture.filename)
+    form_picture.save(picture_path)
+    # output_size = (125 , 125)
+    # i = Image.open(form_picture)
+    # i.thumbnail(output_size)
+    # i.save(picture_path)
+    return form_picture
 
 def send_reset_email(user):
     token = user.get_reset_token()
@@ -114,9 +131,25 @@ def logout():
     return redirect(url_for("views.home"))
 
 
-@user.route('/account')
+    
+@user.route('/account', methods=["GET","POST"])
 @login_required
 def account():
     form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.picture = picture_file
+        current_user.user_name = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account has been update', category="success")
+        return redirect(url_for("user.account"))
+    elif request.method == "GET":
+        form.username.data = current_user.user_name
+        form.email.data = current_user.email
     image_file = url_for('static', filename='assets/img/profile_pics/' + current_user.image_file)
+
+    # print(image_file)
+    
     return render_template("account.html", title = "Account", user = current_user, image_file=image_file, form=form)
