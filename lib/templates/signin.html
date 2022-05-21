@@ -12,9 +12,7 @@
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}
-      
-
-        {{form.remember.label}}{{form.remember}}
+        {{form.remember.label}} {{form.remember}}
         <p><i><a href="{{url_for('user.reset_request') }}">Forget the password</a></i></p>
         <button type="submit" class="btn btn-outline-info">
             LOGIN
