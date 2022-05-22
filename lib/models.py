@@ -39,19 +39,18 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     
-class Upload(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(50))
-    data = db.Column(db.LargeBinary)
+# class Upload(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     filename = db.Column(db.String(50))
+#     data = db.Column(db.LargeBinary)
     
-    def __init__(self, filename, data):
-        self.filename = filename
-        self.data = data
+#     def __init__(self, filename, data):
+#         self.filename = filename
+#         self.data = data
 
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(1000))
     data = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

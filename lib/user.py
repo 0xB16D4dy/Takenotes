@@ -1,9 +1,8 @@
-from tkinter import Image
-from flask import Blueprint, redirect, render_template, request, flash, session, url_for
 from .models import User
 from . import db, mail, app
-# from .. import app
 from .forms import *
+from PIL import Image
+from flask import Blueprint, redirect, render_template, request, flash, session, url_for, current_app
 from flask_mail import Message
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
@@ -14,21 +13,20 @@ import os
 user = Blueprint("user", __name__)
 
 def save_picture(form_picture):
-    # random_hex = secrets.token_hex(8)
-    # _, f_ext = os.path.splitext(form_picture.filename)
-    # picture_fn = random_hex + f_ext
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
     picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+form_picture.filename
-    # picture_path = os.path.join(app.root_path, "/static/assets/img/profile_pics/", form_picture.filename)
+    # picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", form_picture.filename)
     form_picture.save(picture_path)
-    # output_size = (125 , 125)
-    # i = Image.open(form_picture)
-    # i.thumbnail(output_size)
-    # i.save(picture_path)
-    return form_picture
+    output_size = (125 , 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+    return picture_fn
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    # from . import mail
     msg =  Message("Password Reset Request", 
                     sender="hlhphuoc170821@gmail.com", 
                     recipients = [user.email])
@@ -65,8 +63,8 @@ def register():
                 db.session.commit()
                 flash(f"User {form.username.data} created!", category="success")
                 login_user(user, remember=True)
-                # return redirect(url_for("views.home"))
-                return "User Created"
+                return redirect(url_for("views.home"))
+                # return "User Created"
             except:
                 "Create failed!"
 
@@ -139,7 +137,7 @@ def account():
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
-            current_user.picture = picture_file
+            current_user.picture = picture_file    
         current_user.user_name = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -150,6 +148,6 @@ def account():
         form.email.data = current_user.email
     image_file = url_for('static', filename='assets/img/profile_pics/' + current_user.image_file)
 
-    # print(image_file)
-    
     return render_template("account.html", title = "Account", user = current_user, image_file=image_file, form=form)
+
+

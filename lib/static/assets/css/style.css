@@ -4,21 +4,14 @@
   box-sizing: border-box;
 }
 
-body {
-  background: #fafafa;
+body#bg-steel{
+  background-color: #cbd5db;
   color: #333333;
-}
-
-.bg-steel {
-  background: green;
-}
-
-.header .navbar-nav .nav-link {
-  color: #cbd5db;
+  height: 100%;
 }
 
 .col-left .col-left-item {
-  background: #ffffff;
+  background-color: #ffffff;
   padding: 10px 20px;
   border: 1px solid #dddddd;
   margin-bottom: 20px;
@@ -34,13 +27,6 @@ body {
   font-weight: 700;
 }
 
-/* .col-left .col-left-item ul{
-    list-style: none;
-}
-
-.col-left .col-left-item ul li{
-    border: 0.5px solid #000;
-} */
 
 .col-left .col-left-item a {
   text-decoration: none;
@@ -50,7 +36,6 @@ body {
 
 .col-right {
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   flex-direction: column;
 }
@@ -58,7 +43,7 @@ body {
 .col-right .col-right-item {
   width: 50%;
   padding: 25px;
-  background: #988987;
+  background: #ffffff;
   color: #444444;
   border-radius: 8px;
   -webkit-border-radius: 8px;
@@ -87,6 +72,13 @@ body {
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
 }  
+
+input#remember {
+  overflow: visible;
+  vertical-align: middle;
+}
+
+
 .account-img {
   height: 125px;
   width: 125px;
@@ -97,3 +89,30 @@ body {
 .account-heading {
   font-size: 2.5rem;
 }
+
+/* note */
+.col-right .list-group-flush{
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.col-right .list-group-flush .list-group-item{
+  margin-bottom: 7px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+}
+
+.col-right form{
+  width: 100%;
+  
+}
+
+.col-right form #note{
+  height: 200px;
+  margin-bottom: 20px;
+  resize: none;
+}
+
