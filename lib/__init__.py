@@ -15,7 +15,8 @@ app = Flask(__name__)
 load_dotenv()
 SECRET_KEY = os.environ.get("KEY")
 DB_NAME = os.environ.get("DB")
-
+EMAIL = os.environ.get("EMAIL_USER")
+PASS = os.environ.get("EMAIL_PASS")
 
 def create_database(app):
     if not os.path.exists("lib/"+ DB_NAME):
@@ -31,8 +32,8 @@ def create_app():
     db.__init__(app)
     
    
-
-    from .models import User, Upload, Note
+    # from .models import Upload
+    from .models import User, Note
     create_database(app)
 
 
@@ -56,16 +57,13 @@ def create_app():
     app.config["MAIL_SERVER"] = "smtp.googlemail.com"
     app.config["MAIL_PORT"] = 587
     app.config["MAIL_USE_TLS"] = True
-    # load_dotenv()
-    # app.config["MAIL_USERNAME"] = os.environ.get("EMAIL_USER")
-    # app.config["MAIL_PASSWORD"] = os.environ.get("EMAIL_PASS")
-    app.config["MAIL_USERNAME"] = "hlhphuoc170821@gmail.com"
-    app.config["MAIL_PASSWORD"] = "Phuocem201"
+    app.config["MAIL_USERNAME"] = EMAIL           
+    app.config["MAIL_PASSWORD"] = PASS
     mail.__init__(app)
     
     
 
-    # set the time of a session in 1 minutes
-    app.permanent_session_lifetime = timedelta(minutes=1)
+    # set the time of a session in 5 minutes
+    app.permanent_session_lifetime = timedelta(minutes=5)
 
     return app

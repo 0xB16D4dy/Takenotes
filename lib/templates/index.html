@@ -3,7 +3,23 @@
 <!-- {% block title %} Account Page {% endblock %} -->
 
 {% block content %}
-<div class="container-fluid">
-    <h1 class="text-center">This is home page</h1>
-</div>
+<h1 align="center">Notes</h1>
+<ul class="list-group list-group-flush" id="Notes">
+    {% for note in user.notes %}
+        <li class="list-group-item">
+            {{note.data}}
+            <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </li>
+    {% endfor %}
+</ul>
+<form method="post">
+    <textarea name="note" id="note" class="form-control"></textarea>
+    <div class="btn-add">
+        <button type="submit" class="btn btn-primary">
+            Add Note
+        </button>
+    </div>
+</form>
 {% endblock %}
