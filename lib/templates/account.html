@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Home Page {% endblock %}
+{% block title %} Account Page {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
@@ -15,7 +15,6 @@
         </div>
         <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
-            {{ form.csrf_token }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Account Info</legend>
                 <div class="form-group">
