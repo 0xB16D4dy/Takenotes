@@ -20,6 +20,7 @@
     {% endfor %}
 </ul>
 <form method="post">
+    {{ form.csrf_token }}
     <textarea name="note" id="note" class="form-control"></textarea>
     <div class="btn-add">
         <button type="submit" class="btn btn-primary">
