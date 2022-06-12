@@ -97,6 +97,7 @@ input#remember {
 }
 
 .col-right .list-group-flush .list-group-item{
+  overflow-wrap: break-word;
   margin-bottom: 7px;
   border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -116,4 +117,7 @@ input#remember {
   resize: none;
 }
 
-  
+.update{
+  margin-left: 8px;
+}
+

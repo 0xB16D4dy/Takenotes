@@ -5,21 +5,29 @@
 {% block content %}
 <h1 align="center">Notes</h1>
 <ul class="list-group list-group-flush" id="Notes">
-    {% for note in user.notes %}
-        <li class="list-group-item">
-            {{note.data}}
-            <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </li>
-    {% endfor %}
+  {% for note in user.notes %}
+  <li class="list-group-item">
+    <a href="{{url_for('views.update_note',id=note.id)}}">
+      <button id="btnUpdate" type="button" class="close update">
+        <i class="fas fa-edit"></i>
+      </button>
+    </a>
+    <button
+      id="btnDelete"
+      type="button"
+      class="close"
+      onClick="deleteNote({{ note.id }})"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{note.data}}
+  </li>
+  {% endfor %}
 </ul>
 <form method="post">
-    <textarea name="note" id="note" class="form-control"></textarea>
-    <div class="btn-add">
-        <button type="submit" class="btn btn-primary">
-            Add Note
-        </button>
-    </div>
+  <textarea name="note" id="note" class="form-control"></textarea>
+  <div class="btn-add">
+    <button type="submit" class="btn btn-primary">Add Note</button>
+  </div>
 </form>
 {% endblock %}
