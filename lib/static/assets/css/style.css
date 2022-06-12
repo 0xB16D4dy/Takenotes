@@ -117,7 +117,14 @@ input#remember {
   resize: none;
 }
 
-.update{
-  margin-left: 8px;
+.dob-item{
+  padding: 8px 0;
 }
 
+.update{
+  margin-right: 8px;
+}
+
+.update i{
+  font-size: 1.2rem;
+}
