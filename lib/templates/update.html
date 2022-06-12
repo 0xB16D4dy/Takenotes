@@ -7,9 +7,7 @@ Update note
 {% block content %}
 <h1 align="center">Update Notes</h1>
 <form method="post">
-    {{ form.csrf_token }}
-    <textarea name="note" id="note" class="form-control">
-    </textarea>
+    <textarea name="note" id="note" class="form-control">{{note_to_update.data}}</textarea>
     <div class="btn-add">
         <button type="submit" class="btn btn-primary">
            Update

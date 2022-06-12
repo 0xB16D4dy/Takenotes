@@ -39,16 +39,32 @@ def delete_note():
 
 
 
+# @views.route('/update-note/<int:id>', methods=["GET","POST"])
+# def update_note(id):
+#     if request.method == 'POST':
+#         note_to_update = Note.query.get(id)
+#         note = request.form.get('note')
+#         # id_to_update = Note.query.get(note_id)
+#         if note_to_update:
+#             if note_to_update.user_id == current_user.id:
+#                 note_to_update.data = note
+#                 db.session.commit()
+#             flash('Note update!', category="success")
+#         return redirect(url_for("views.home"))
+#     return render_template("update.html",user = current_user) 
+
 @views.route('/update-note/<int:id>', methods=["GET","POST"])
 def update_note(id):
+    note_to_update = Note.query.get(id)
     if request.method == 'POST':
         note = request.form.get('note')
         # id_to_update = Note.query.get(note_id)
-        note_to_update = Note.query.get(id)
         if note_to_update:
             if note_to_update.user_id == current_user.id:
-                note_to_update.data = note
-                db.session.commit()
-            flash('Note update!', category="success")
-        return redirect(url_for("views.home"))
-    return render_template("update.html",user = current_user) 
+                if note != "":
+                    note_to_update.data = note
+                    db.session.commit()
+                    flash('Note update!', category="success")
+                    return redirect(url_for("views.home")) 
+                flash("error", category="danger")
+    return render_template("update.html",user = current_user, note_to_update = note_to_update) 
