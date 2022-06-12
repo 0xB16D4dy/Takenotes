@@ -21,7 +21,7 @@ class loginForm(FlaskForm):
     remember = BooleanField("Remeber Me")
 
     def validate_username(self, username):
-        excluded_chars = "*?!'^+%&/()=}][{$-#"
+        excluded_chars = "*?!'^+%&/()=}][{$-#\";"
         for char in self.username.data:
             if char in excluded_chars:
                 raise ValidationError(
@@ -98,3 +98,6 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
+
+class SearchForm(FlaskForm):
+    search = StringField('search', validators=[DataRequired()])

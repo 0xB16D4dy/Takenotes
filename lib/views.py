@@ -5,6 +5,7 @@ from flask_login import current_user, login_required
 from .models import Note
 from . import db
 import json
+from .forms import *
 # from sqlalchemy.sql.functions import user
 
 views = Blueprint("views", __name__)
@@ -13,6 +14,7 @@ views = Blueprint("views", __name__)
 @views.route('/', methods=["GET","POST"])
 @login_required
 def home():
+    form = SearchForm()
     if request.method == 'POST':
         note = request.form.get('note')
         if len(note) < 1:
@@ -22,7 +24,7 @@ def home():
             db.session.add(new_note)
             db.session.commit()
             flash('Note added!', category="success")
-    return render_template('index.html', user=current_user)
+    return render_template('index.html', form = form, user=current_user)
 
 
 @views.route('/delete-note', methods=["POST"])

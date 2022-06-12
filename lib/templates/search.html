@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content%}
+    <ul class="list-group list-group-flush" id="Notes">
+        {% for result in results %}
+            <li class="list-group-item">
+                {{ result.data }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
