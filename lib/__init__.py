@@ -66,6 +66,6 @@ def create_app():
     
 
     # set the time of a session in 5 minutes
-    app.permanent_session_lifetime = timedelta(minutes=5)
+    app.permanent_session_lifetime = timedelta(minutes=9999999)
 
     return app

@@ -1,4 +1,4 @@
-from .models import User
+from .models import User, Note
 from . import db, mail, app
 from .forms import *
 from PIL import Image
@@ -149,3 +149,11 @@ def account():
     return render_template("account.html", title = "Account", user = current_user, image_file=image_file, form=form)
 
 
+@user.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        results = Note.query.filter(Note.data.like('%' + form.search.data + '%'))
+        #print(results)
+        return render_template('search.html', user = current_user, form=form, results=results)
+    return render_template('search.html', user = current_user, form=form)

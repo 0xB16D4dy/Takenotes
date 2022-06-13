@@ -38,6 +38,18 @@
                 >TAKE NOTES</a
               >
             </div>
+            <!-- ==============================Search================================== -->
+            <form action="{{url_for('user.search')}}" method="POST">
+              <div class="search">
+                {{ form.hidden_tag() }}
+                {{ form.search }}
+                
+                <button type="submit" class="btn btn-outline-info">
+                  search
+              </button>
+              </div>
+            </form>
+
             <button
               class="navbar-toggler"
               type="button"
