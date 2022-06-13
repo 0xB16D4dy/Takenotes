@@ -28,6 +28,7 @@ def create_app():
     #config database
     app.config["SECRET_KEY"] = SECRET_KEY
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     Bootstrap(app)
     db.__init__(app)
     
@@ -51,7 +52,6 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-
    
      #config mailserver 
     app.config["MAIL_SERVER"] = "smtp.googlemail.com"
@@ -60,6 +60,8 @@ def create_app():
     app.config["MAIL_USERNAME"] = EMAIL           
     app.config["MAIL_PASSWORD"] = PASS
     mail.__init__(app)
+
+    # app.config['UPLOAD_FOLDER']='logs'
     
     
 

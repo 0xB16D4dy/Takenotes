@@ -56,6 +56,10 @@ body#bg-steel{
   width: 50%;
 }
 
+.form-check{
+  padding-left: 0;
+}
+
 .col-right-item .btn {
   width: 100%;
   background-color: #fff;

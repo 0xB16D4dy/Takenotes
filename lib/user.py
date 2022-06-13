@@ -6,9 +6,9 @@ from flask import Blueprint, redirect, render_template, request, flash, session,
 from flask_mail import Message
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-# from flask_wtf import FlaskForm
 import secrets
 import os
+from os.path import exists as file_exists
 
 user = Blueprint("user", __name__)
 
@@ -16,8 +16,8 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+picture_fn
-    # picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", form_picture.filename)
+    # picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+picture_fn
+    picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", picture_fn)
     form_picture.save(picture_path)
     output_size = (125 , 125)
     i = Image.open(form_picture)
@@ -28,7 +28,7 @@ def save_picture(form_picture):
 def send_reset_email(user):
     token = user.get_reset_token()
     msg =  Message("Password Reset Request", 
-                    sender="hlhphuoc170821@gmail.com", 
+                    sender="imaptest44@gmail.com", 
                     recipients = [user.email])
     msg.body =  f''' To reset your password, visit the following link:
 {url_for("user.reset_token", token = token, _external=True)}
@@ -64,7 +64,6 @@ def register():
                 flash(f"User {form.username.data} created!", category="success")
                 login_user(user, remember=True)
                 return redirect(url_for("views.home"))
-                # return "User Created"
             except:
                 "Create failed!"
 
@@ -84,8 +83,6 @@ def login():
                 # Sửa để không hiện ra next=%2F<account> trên url nữa
                 next_page = request.args.get("netxt")
                 return redirect(next_page) if next_page else redirect(url_for("views.home"))
-                # flash("Logged in Success!",category="success")
-                # return redirect(url_for('views.home'))
             else:
                 flash("Wrong password, please try again!", category="danger")    
 
@@ -118,7 +115,7 @@ def reset_token(token):
         user.password = new_password
         db.session.commit()
         flash("Your password has been update! You are now able to log in", category="success")
-        return redirect(url_for("user.signin"))
+        return redirect(url_for("user.login"))
     return render_template("reset_with_token.html", tittle = "Reset Password", form = form, user = current_user)
 
 
@@ -126,6 +123,7 @@ def reset_token(token):
 @login_required
 def logout():
     logout_user()
+    session.clear()
     return redirect(url_for("views.home"))
 
 
@@ -136,8 +134,9 @@ def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
-            picture_file = save_picture(form.picture.data)
-            current_user.image_file = picture_file 
+            if file_exists(form.picture.data): 
+                picture_file = save_picture(form.picture.data)
+                current_user.image_file = picture_file 
         current_user.user_name = form.username.data
         current_user.email = form.email.data
         db.session.commit()

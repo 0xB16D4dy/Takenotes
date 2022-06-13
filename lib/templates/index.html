@@ -8,6 +8,7 @@
   {% for note in user.notes %}
   <div class="dob-item">
     {{note.date.strftime('%b %d,%Y - %I:%M%p')}}
+
     <button
       id="btnDelete"
       type="button"
@@ -19,6 +20,11 @@
     <a href="{{url_for('views.update_note',id=note.id)}}">
       <button id="btnUpdate" type="button" class="close update">
         <i class="fas fa-edit"></i>
+      </button>
+    </a>
+    <a href="{{ url_for('views.download', id=note.id) }}">
+      <button id="btnUpdate" type="button" class="close update">
+        <i class="fa-solid fa-download"></i>
       </button>
     </a>
   </div>
