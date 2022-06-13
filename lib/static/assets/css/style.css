@@ -56,6 +56,10 @@ body#bg-steel{
   width: 50%;
 }
 
+.form-check{
+  padding-left: 0;
+}
+
 .col-right-item .btn {
   width: 100%;
   background-color: #fff;
@@ -117,7 +121,14 @@ input#remember {
   resize: none;
 }
 
-.update{
-  margin-left: 8px;
+.dob-item{
+  padding: 8px 0;
 }
 
+.update{
+  margin-right: 8px;
+}
+
+.update i{
+  font-size: 1.2rem;
+}
