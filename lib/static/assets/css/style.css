@@ -155,7 +155,7 @@ input#remember {
 }
 
 .input__label {
-	display: inline-block;
+	display: block;
 	float: right;
 	padding: 0 1em;
 	width: 40%;

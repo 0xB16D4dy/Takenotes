@@ -27,6 +27,7 @@ def home():
 
 
 @views.route('/delete-note', methods=["POST"])
+@login_required
 def delete_note():
     note = json.loads(request.data)
     note_id = note['note_id']
@@ -40,8 +41,8 @@ def delete_note():
  
 
 @views.route('/update-note/<int:id>', methods=["GET","POST"])
+@login_required
 def update_note(id):
-    form = SearchForm()
     note_to_update = Note.query.get(id)
     if request.method == 'POST':
         note = request.form.get('note')
@@ -60,6 +61,7 @@ def update_note(id):
 
 
 @views.route('/download/<int:id>', methods=['GET', 'POST'])
+@login_required
 def download(id):
     note_to_download = Note.query.get(id)
     note_name_ext = str(id)+".txt"

@@ -4,12 +4,12 @@ from .forms import *
 from PIL import Image
 from flask import Blueprint, redirect, render_template, request, flash, session, url_for, current_app
 from flask_mail import Message
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import secrets
 import os
 import base64
-import sys
 
 user = Blueprint("user", __name__)
 
@@ -18,8 +18,7 @@ def save_picture(form_picture):
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
     picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+picture_fn
-    # picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", form_picture.filename)
-    #form_picture.save(picture_path)
+    # picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", picture_fn)
     output_size = (125 , 125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
@@ -135,9 +134,8 @@ def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
-            if file_exists(form.picture.data): 
-                picture_file = save_picture(form.picture.data)
-                current_user.image_file = picture_file 
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file 
         current_user.user_name = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -151,11 +149,11 @@ def account():
 
 
 @user.route('/search', methods=['GET', 'POST'])
+@login_required
 def search():
     form = SearchForm()
     if form.validate_on_submit():
         results = Note.query.filter(Note.data.like('%' + form.search.data + '%'))
-        #print(results)
         return render_template('search.html', user = current_user, form=form, results=results)
     return render_template('search.html', user = current_user, form=form)
 
@@ -164,6 +162,7 @@ def upload_file():
     form = UploadFile()
     if request.method == 'POST':
         f = request.files['file']
+        # f = secure_filename(form.file.data.filename)
         file_string = base64.b64encode(f.read())
         file_string = base64.b64decode(file_string)
         file_string = file_string.decode('utf-8')

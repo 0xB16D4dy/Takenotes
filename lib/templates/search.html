@@ -1,5 +1,12 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 {% block content%}
+<form class="form w-100" method="POST">
+  {{form.csrf_token()}}
+  {{form.search}}
+  <button type="submit" class="btn btn-outline-info">
+    search
+  </button>
+</form>
 <section class="card-list">
     {% for result in results %}
         <article class="card">
@@ -23,4 +30,5 @@
         </article>
     {% endfor %}
 </section>
+
 {% endblock %}
