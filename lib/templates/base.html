@@ -54,14 +54,12 @@
             <ul class="navbar-nav my-auto">
               {% if user.is_authenticated %}
               <!-- ==============================Search================================== -->
-            <form class="form-inline flex-nowrap" action="{{url_for('user.search')}}" method="POST">
-                {{ form.hidden_tag() }}
-                {{ form.search}}
-                
-                <button type="submit" class="btn btn-outline-info">
-                  search
-              </button>
-            </form>
+            
+              <li class="nav-item active"> 
+                <a class="nav-link" href="{{url_for('user.search')}}">Search</a> 
+              </li>
+              
+
               <li class="nav-item active">
                 <a class="nav-link" href="{{ url_for('user.account') }}">Account</a>
               </li>

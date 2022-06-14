@@ -4,12 +4,12 @@ from .forms import *
 from PIL import Image
 from flask import Blueprint, redirect, render_template, request, flash, session, url_for, current_app
 from flask_mail import Message
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import secrets
 import os
 import base64
-import sys
 
 user = Blueprint("user", __name__)
 
@@ -62,7 +62,7 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
                 flash(f"User {form.username.data} created!", category="success")
-                login_user(user, remember=True)
+                login_user(new_user, remember=False)
                 return redirect(url_for("views.home"))
             except:
                 "Create failed!"
@@ -122,8 +122,8 @@ def reset_token(token):
 @user.route('/logout')
 @login_required
 def logout():
-    logout_user()
     session.clear()
+    logout_user()
     return redirect(url_for("views.home"))
 
 
@@ -154,7 +154,6 @@ def search():
     form = SearchForm()
     if form.validate_on_submit():
         results = Note.query.filter(Note.data.like('%' + form.search.data + '%'))
-        print(results)
         return render_template('search.html', user = current_user, form=form, results=results)
     return render_template('search.html', user = current_user, form=form)
 
@@ -163,6 +162,7 @@ def upload_file():
     form = UploadFile()
     if request.method == 'POST':
         f = request.files['file']
+        # f = secure_filename(form.file.data.filename)
         file_string = base64.b64encode(f.read())
         file_string = base64.b64decode(file_string)
         file_string = file_string.decode('utf-8')
