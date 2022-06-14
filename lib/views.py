@@ -1,6 +1,4 @@
-from platform import node
-from turtle import title
-from flask import Blueprint, flash, redirect, render_template, request, jsonify, url_for
+from flask import Blueprint, flash, redirect, render_template, request, jsonify, url_for, send_from_directory,current_app
 from flask_login import current_user, login_required
 from .models import Note
 from . import db
@@ -9,6 +7,7 @@ from .forms import *
 # from sqlalchemy.sql.functions import user
 
 views = Blueprint("views", __name__)
+
 
 @views.route('/home', methods=["GET","POST"])
 @views.route('/', methods=["GET","POST"])
@@ -38,22 +37,7 @@ def delete_note():
             db.session.commit()
         flash('Note deleted!', category="success")
     return jsonify({"code" : 200})
-
-
-
-# @views.route('/update-note/<int:id>', methods=["GET","POST"])
-# def update_note(id):
-#     if request.method == 'POST':
-#         note_to_update = Note.query.get(id)
-#         note = request.form.get('note')
-#         # id_to_update = Note.query.get(note_id)
-#         if note_to_update:
-#             if note_to_update.user_id == current_user.id:
-#                 note_to_update.data = note
-#                 db.session.commit()
-#             flash('Note update!', category="success")
-#         return redirect(url_for("views.home"))
-#     return render_template("update.html",user = current_user) 
+ 
 
 @views.route('/update-note/<int:id>', methods=["GET","POST"])
 def update_note(id):
@@ -70,4 +54,18 @@ def update_note(id):
                     flash('Note update!', category="success")
                     return redirect(url_for("views.home")) 
                 flash("error", category="danger")
-    return render_template("update.html",user = current_user, form = form, note_to_update = note_to_update) 
+    return render_template("update.html",user = current_user, note_to_update = note_to_update) 
+
+
+
+
+@views.route('/download/<int:id>', methods=['GET', 'POST'])
+def download(id):
+    note_to_download = Note.query.get(id)
+    note_name_ext = str(id)+".txt"
+    note_path = current_app.root_path+"\\static\\assets\\file\\"
+    full_path = note_path+note_name_ext
+    with open(full_path, 'w') as f: 
+        f.writelines(str(note_to_download.data))
+        f.close()
+    return send_from_directory(note_path, note_name_ext, as_attachment=True)

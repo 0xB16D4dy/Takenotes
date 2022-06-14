@@ -1,8 +1,6 @@
 import os
-from tkinter import image_names
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from sqlalchemy import false
 from . import db
 from sqlalchemy.sql import func
 
@@ -25,8 +23,6 @@ class User(db.Model, UserMixin):
         self.password = password
         self.user_name = user_name
 
-    # def update_image(self, image):
-    #     self.image_file = image
 
 
     def get_reset_token(self, expires_sec=1800):
@@ -41,17 +37,6 @@ class User(db.Model, UserMixin):
         except:
             return None
         return User.query.get(user_id)
-
-    
-# class Upload(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     filename = db.Column(db.String(50))
-#     data = db.Column(db.LargeBinary)
-    
-#     def __init__(self, filename, data):
-#         self.filename = filename
-#         self.data = data
-
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)

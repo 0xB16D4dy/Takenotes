@@ -6,12 +6,9 @@
 <h1 align="center">Notes</h1>
 <ul class="list-group list-group-flush" id="Notes">
   {% for note in user.notes %}
-  <li class="list-group-item">
-    <a href="{{url_for('views.update_note',id=note.id)}}">
-      <button id="btnUpdate" type="button" class="close update">
-        <i class="fas fa-edit"></i>
-      </button>
-    </a>
+  <div class="dob-item">
+    {{note.date.strftime('%b %d,%Y - %I:%M%p')}}
+
     <button
       id="btnDelete"
       type="button"
@@ -20,6 +17,20 @@
     >
       <span aria-hidden="true">&times;</span>
     </button>
+    <a href="{{url_for('views.update_note',id=note.id)}}">
+      <button id="btnUpdate" type="button" class="close update">
+        <i class="fas fa-edit"></i>
+      </button>
+    </a>
+    <a href="{{ url_for('views.download', id=note.id) }}">
+      <button id="btnUpdate" type="button" class="close update">
+        <i class="fa-solid fa-download"></i>
+      </button>
+    </a>
+  </div>
+  <li class="list-group-item">
+    
+    
     {{note.data}}
   </li>
   {% endfor %}
