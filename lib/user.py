@@ -63,7 +63,7 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
                 flash(f"User {form.username.data} created!", category="success")
-                login_user(user, remember=True)
+                login_user(new_user, remember=False)
                 return redirect(url_for("views.home"))
             except:
                 "Create failed!"
@@ -123,8 +123,8 @@ def reset_token(token):
 @user.route('/logout')
 @login_required
 def logout():
-    logout_user()
     session.clear()
+    logout_user()
     return redirect(url_for("views.home"))
 
 

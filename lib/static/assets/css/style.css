@@ -125,7 +125,6 @@ input#remember {
   padding: 8px 0;
 }
 
-<<<<<<< HEAD
 .input {
 	position: relative;
 	z-index: 1;
@@ -299,7 +298,6 @@ input#remember {
 		transform: translate3d(0, -40%, 0);
 	}
 }
-=======
 .update{
   margin-right: 8px;
 }
@@ -307,4 +305,112 @@ input#remember {
 .update i{
   font-size: 1.2rem;
 }
->>>>>>> 5e3d23b38fcb820341669c53871a5d5b0ad8fc3b
+
+.trans{
+	transform: translate(0px, 100px);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #cbd5db;
+    color: white;
+    font-family: 'DM Mono', monospace;
+}
+
+a {
+    text-decoration: none;
+}
+
+.card-list {
+    display: flex;
+    padding: 3rem;
+    overflow-x: scroll;
+}
+
+.card-list::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.card-list::-webkit-scrollbar-thumb {
+    background: #fff7d1;
+    border-radius: 10px;
+}
+
+.card-list::-webkit-scrollbar-track {
+    background-color: #e6e3d5;
+}
+
+
+.card {
+    height: 350px;
+    width: 400px;
+    min-width: 250px;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: #fff7d1;
+	box-shadow: -0 12px 20px #444444;
+    display: flex;
+    flex-direction: column;
+    transition: .2s;
+    margin: 0;
+    scroll-snap-align: start;
+    clear: both;
+    position: relative;
+	border: 1px solid gray;
+}
+
+.card:focus-within~.card, .card:hover~.card {
+    transform: translateX(130px);
+}
+
+.card:hover {
+    transform: translateY(-1rem);
+}
+
+.card:not(:first-child) {
+    margin-left: -130px;
+}
+
+
+.card-content {
+    margin-bottom: auto;
+}
+
+.card-content a{
+    color: #525252;
+}
+
+.card-content p {
+    font-size: 12px;
+    margin: 0;
+	padding-right: 5px;
+    color: #7a7a8c;
+	display: inline-block;
+	line-height: 28px;
+}
+
+.card-content h2 {
+    font-size: 20px;
+    margin: .25rem 0 auto;
+    text-decoration: none;
+    color: inherit;
+    border: 0;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.card-content h2:hover {
+    background: linear-gradient(90deg,#ff8a00,#e52e71);
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+
+ion-icon {
+	color: #525252;
+}
