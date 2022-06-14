@@ -6,17 +6,11 @@ Update note
 
 {% block content %}
 <h1 align="center">Update Notes</h1>
-<form method="post">
-    {{form.hidden_tag()}}
-    <div class="form-control ckeditor">
-        {{form.content}}
-        <div class="btn-add">
-            <button type="submit" class="btn btn-primary">
-               Update
-            </button>
-        </div>
-    </div>
+<form method="post" class="">
+    <textarea name="note" id="note" class="form-control">{{note_to_update | safe}}</textarea>
+    <div class="btn-add">
+        <button type="submit" class="btn btn-primary">
+           Update
+        </button>
 </form>
-   {{ ckeditor.load() }}
-   {{ ckeditor.config(name='content') }}
 {% endblock %}

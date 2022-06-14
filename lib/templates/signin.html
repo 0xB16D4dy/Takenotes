@@ -6,20 +6,24 @@
 {% endblock %}
 
 {% block content %}
-<div class="col-right-item">
-    <h3 align ="center">Login</h3>
-    <form action="{{url_for('user.login')}}" method="POST">
-        {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.username) }}
-        {{ wtf.form_field(form.password) }}
-        <div class="form-check">
-            {{form.remember.label }} 
-            {{form.remember }}
+<div class="row justify-content-md-center my-lg-3">
+    <div class="col-md-9 col-right">
+        <div class="col-right-item">
+            <h3 align ="center">Login</h3>
+            <form action="{{url_for('user.login')}}" method="POST">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.username) }}
+                {{ wtf.form_field(form.password) }}
+                <div class="form-check">
+                    {{form.remember.label }} 
+                    {{form.remember }}
+                </div>
+                <p><i><a href="{{url_for('user.reset_request') }}">Forget the password</a></i></p>
+                <button type="submit" class="btn btn-outline-info">
+                    LOGIN
+                </button>
+            </form>
         </div>
-        <p><i><a href="{{url_for('user.reset_request') }}">Forget the password</a></i></p>
-        <button type="submit" class="btn btn-outline-info">
-            LOGIN
-        </button>
-    </form>
+    </div>
 </div>
 {% endblock %}
