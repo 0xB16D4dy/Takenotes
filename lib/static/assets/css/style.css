@@ -10,7 +10,7 @@ body#bg-steel{
   height: 100%;
 }
 
-.col-left .col-left-item {
+/* .col-left .col-left-item {
   background-color: #ffffff;
   padding: 10px 20px;
   border: 1px solid #dddddd;
@@ -32,7 +32,7 @@ body#bg-steel{
   text-decoration: none;
   color: #333;
   font-size: 20px;
-}
+} */
 
 .col-right {
   display: flex;
@@ -110,19 +110,46 @@ input#remember {
   -o-border-radius: 3px;
 }
 
-.col-right form{
-  width: 100%;
-  
-}
-
-.col-right form #note{
-  height: 200px;
-  margin-bottom: 20px;
-  resize: none;
+.form-control.ckeditor{
+	width: 832px;
 }
 
 .dob-item{
   padding: 8px 0;
+}
+
+.search{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.search .title{
+	font-size: 5rem;
+    font-weight: 300;
+    user-select: none;
+    margin-bottom: 0.5rem;
+}
+
+.search .form-inline {
+	flex-wrap: nowrap;
+	margin-bottom: 20px;
+}
+
+.search .form-inline input{
+	width: 500px;
+    background-color: rgb(255, 255, 255);
+    height: 38px;
+	font-size: 14px;
+	/* padding-top: 10.5px;
+    padding-bottom: 10.5px;
+	padding: 18.5px 14px; */
+	padding: 10.5px 14px 10.5px 18.5px;
+}
+
+.search .form-inline button{
+	width: 100px;
 }
 
 

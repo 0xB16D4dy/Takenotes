@@ -1,5 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, jsonify, url_for, send_from_directory,current_app
 from flask_login import current_user, login_required
+from bs4 import BeautifulSoup
 from .models import Note
 from . import db
 import json
@@ -13,16 +14,14 @@ views = Blueprint("views", __name__)
 @views.route('/', methods=["GET","POST"])
 @login_required
 def home():
-    form = SearchForm()
-    if request.method == 'POST':
-        note = request.form.get('note')
-        if len(note) < 1:
-            flash('Note is too short!', category="danger")
-        else:
+    form = NoteForm()
+    if form.validate_on_submit():
+        note = form.content.data
+        if note:
             new_note = Note(data = note, user_id = current_user.id)
             db.session.add(new_note)
             db.session.commit()
-            flash('Note added!', category="success")
+        flash('Note added!', category="success")
     return render_template('index.html', form = form, user=current_user)
 
 
@@ -43,9 +42,11 @@ def delete_note():
 @views.route('/update-note/<int:id>', methods=["GET","POST"])
 @login_required
 def update_note(id):
-    note_to_update = Note.query.get(id)
-    if request.method == 'POST':
-        note = request.form.get('note')
+    form = NoteForm()
+   
+    if form.validate_on_submit():
+        note = form.content.data
+        note_to_update = Note.query.get(id)
         # id_to_update = Note.query.get(note_id)
         if note_to_update:
             if note_to_update.user_id == current_user.id:
@@ -53,9 +54,10 @@ def update_note(id):
                     note_to_update.data = note
                     db.session.commit()
                     flash('Note update!', category="success")
-                    return redirect(url_for("views.home")) 
-                flash("error", category="danger")
-    return render_template("update.html",user = current_user, note_to_update = note_to_update) 
+                else:
+                    flash("error", category="danger")
+            return redirect(url_for("views.home")) 
+    return render_template("update.html",user = current_user, form = form) 
 
 
 
@@ -67,7 +69,8 @@ def download(id):
     note_name_ext = str(id)+".txt"
     note_path = current_app.root_path+"\\static\\assets\\file\\"
     full_path = note_path+note_name_ext
+    plaintext = BeautifulSoup(note_to_download.data)
     with open(full_path, 'w') as f: 
-        f.writelines(str(note_to_download.data))
+        f.writelines(str(plaintext.get_text()))
         f.close()
     return send_from_directory(note_path, note_name_ext, as_attachment=True)
