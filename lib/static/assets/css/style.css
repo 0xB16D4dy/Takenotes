@@ -110,8 +110,15 @@ input#remember {
   -o-border-radius: 3px;
 }
 
-.form-control.ckeditor{
-	width: 832px;
+.note-import {
+	display: flex;
+	justify-content: center;
+}
+
+.note-add .btn-add {
+	display: flex;
+	flex-direction: row-reverse;
+	margin-top: 15px;
 }
 
 .dob-item{
@@ -277,7 +284,6 @@ body {
     padding: 0;
     margin: 0;
     background-color: #cbd5db;
-    color: white;
     font-family: 'DM Mono', monospace;
 }
 

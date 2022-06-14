@@ -21,7 +21,7 @@
       </div>
       
       <div>
-        <h2><a href="{{url_for('views.update_note',id=note.id)}}">{{note.data | truncate(130)}}</a></h2>
+        <h2><a href="{{url_for('views.update_note',id=note.id)}}">{{note.data | truncate(130) | safe}}</a></h2>
       </div>
     </header>
   </article>
@@ -36,7 +36,7 @@
       {{form.content}}
     </div>
     <div class="btn-add">
-      <button type="submit" class="btn btn-primary">Add Note</button>
+      <button type="submit" class="btn btn-primary ">Add Note</button>
     </div>
   </form>
   

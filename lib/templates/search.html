@@ -10,29 +10,29 @@
       search
     </button>
   </form>
-  <section class="card-list">
-    {% for result in results %}
-        <article class="card">
-            <header class="card-content">
-              <div class="d-flex justify-content-md-around align-items-md-center">
-                <p>{{result.date.strftime('%b %d,%Y - %I:%M%p')}}</p>
-                <a href="{{ url_for('views.download', id=result.id) }}">
-                  <button id="btnUpdate" type="button" class="close update">
-                    <ion-icon name="download-outline"></ion-icon>
-                  </button>
-                </a>
-                <button id="btnDelete" type="button" class="close" onClick="deleteNote({{ result.id }})">
-                  <ion-icon name="trash-outline"></ion-icon>
-                </button>
-              </div>
-              
-              <div>
-                <h2><a href="{{url_for('views.update_note',id=result.id)}}">{{result.data | truncate(130)}}</a></h2>
-              </div>
-            </header>
-        </article>
-    {% endfor %}
-</section>
-</div>
 
+</div>
+<section class="card-list">
+  {% for result in results %}
+      <article class="card">
+          <header class="card-content">
+            <div class="d-flex justify-content-md-around align-items-md-center">
+              <p>{{result.date.strftime('%b %d,%Y - %I:%M%p')}}</p>
+              <a href="{{ url_for('views.download', id=result.id) }}">
+                <button id="btnUpdate" type="button" class="close update">
+                  <ion-icon name="download-outline"></ion-icon>
+                </button>
+              </a>
+              <button id="btnDelete" type="button" class="close" onClick="deleteNote({{ result.id }})">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+            </div>
+            
+            <div>
+              <h2><a href="{{url_for('views.update_note',id=result.id)}}">{{result.data | truncate(130) | safe}}</a></h2>
+            </div>
+          </header>
+      </article>
+  {% endfor %}
+</section>
 {% endblock %}

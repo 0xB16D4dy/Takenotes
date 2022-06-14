@@ -42,12 +42,10 @@ def delete_note():
 @views.route('/update-note/<int:id>', methods=["GET","POST"])
 @login_required
 def update_note(id):
-    form = NoteForm()
-   
-    if form.validate_on_submit():
-        note = form.content.data
-        note_to_update = Note.query.get(id)
-        # id_to_update = Note.query.get(note_id)
+    note_to_update = Note.query.get(id)
+    plaintext = BeautifulSoup(note_to_update.data)
+    if request.method == 'POST':
+        note = request.form.get('note')
         if note_to_update:
             if note_to_update.user_id == current_user.id:
                 if note != "":
@@ -57,7 +55,7 @@ def update_note(id):
                 else:
                     flash("error", category="danger")
             return redirect(url_for("views.home")) 
-    return render_template("update.html",user = current_user, form = form) 
+    return render_template("update.html",user = current_user, note_to_update = str(plaintext.get_text())) 
 
 
 
