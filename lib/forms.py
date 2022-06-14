@@ -75,8 +75,9 @@ class ResetPasswordForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',validators=[DataRequired(), Length(min=4, max=20)])
     email = StringField('Email',validators=[DataRequired(), Email()])
-    picture = FileField('Update Profile Picture', validators=[ FileRequired(),FileAllowed(['jpg', 'png'])])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
+    # search = StringField('search', validators=[DataRequired()])
 
     def validate_username(self, username):
         if username.data != current_user.user_name:
@@ -94,5 +95,7 @@ class SearchForm(FlaskForm):
     search = StringField('search', validators=[DataRequired()])
 
 class UploadFile(FlaskForm):
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['txt', 'py'])])
+    upload = FileField('upload', validators=[FileAllowed(['txt'])])
     submit = SubmitField('Update')
+
+# class 

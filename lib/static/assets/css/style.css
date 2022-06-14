@@ -125,7 +125,7 @@ input#remember {
   padding: 8px 0;
 }
 
-<<<<<<< HEAD
+
 .input {
 	position: relative;
 	z-index: 1;
@@ -156,7 +156,7 @@ input#remember {
 }
 
 .input__label {
-	display: inline-block;
+	display: block;
 	float: right;
 	padding: 0 1em;
 	width: 40%;
@@ -299,7 +299,7 @@ input#remember {
 		transform: translate3d(0, -40%, 0);
 	}
 }
-=======
+
 .update{
   margin-right: 8px;
 }
@@ -307,4 +307,14 @@ input#remember {
 .update i{
   font-size: 1.2rem;
 }
->>>>>>> 5e3d23b38fcb820341669c53871a5d5b0ad8fc3b
+
+
+#search {
+  margin-right: 10px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}

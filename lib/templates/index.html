@@ -8,7 +8,6 @@
   {% for note in user.notes %}
   <div class="dob-item">
     {{note.date.strftime('%b %d,%Y - %I:%M%p')}}
-
     <button
       id="btnDelete"
       type="button"

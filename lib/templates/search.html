@@ -1,10 +1,18 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 {% block content%}
-    <ul class="list-group list-group-flush" id="Notes">
-        {% for result in results %}
-            <li class="list-group-item">
-                {{ result.data }}
-            </li>
-        {% endfor %}
-    </ul>
+<form class="form w-100" method="POST">
+  {{form.csrf_token()}}
+  {{form.search}}
+  <button type="submit" class="btn btn-outline-info">
+    search
+  </button>
+</form>
+<ul class="list-group list-group-flush" id="Notes">
+  {% for result in results %} 
+  {% if result %} 
+  <li class="list-group-item">{{ result.data }}</li>
+  {% endif %}
+  
+  {% endfor %}
+</ul>
 {% endblock %}
