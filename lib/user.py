@@ -8,7 +8,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import secrets
 import os
-from os.path import exists as file_exists
+import base64
+import sys
 
 user = Blueprint("user", __name__)
 
@@ -16,9 +17,9 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    # picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+picture_fn
-    picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", picture_fn)
-    form_picture.save(picture_path)
+    picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+picture_fn
+    # picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", form_picture.filename)
+    #form_picture.save(picture_path)
     output_size = (125 , 125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
@@ -157,3 +158,20 @@ def search():
         #print(results)
         return render_template('search.html', user = current_user, form=form, results=results)
     return render_template('search.html', user = current_user, form=form)
+
+@user.route('/uploadFile', methods=["GET","POST"])
+def upload_file():
+    form = UploadFile()
+    if request.method == 'POST':
+        f = request.files['file']
+        file_string = base64.b64encode(f.read())
+        file_string = base64.b64decode(file_string)
+        file_string = file_string.decode('utf-8')
+        if len(file_string) < 1:
+            flash('Note is too short!', category="danger")
+        else:
+            new_note = Note(data = file_string, user_id = current_user.id)
+            db.session.add(new_note)
+            db.session.commit()
+            flash('Note added!', category="success")
+        return redirect(url_for("views.home"))

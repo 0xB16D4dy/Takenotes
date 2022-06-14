@@ -41,6 +41,7 @@ def delete_note():
 
 @views.route('/update-note/<int:id>', methods=["GET","POST"])
 def update_note(id):
+    form = SearchForm()
     note_to_update = Note.query.get(id)
     if request.method == 'POST':
         note = request.form.get('note')
