@@ -132,3 +132,13 @@ input#remember {
 .update i{
   font-size: 1.2rem;
 }
+
+#search {
+  margin-right: 10px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}

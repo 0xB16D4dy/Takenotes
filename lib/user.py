@@ -16,9 +16,8 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    # picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+picture_fn
-    picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", picture_fn)
-    form_picture.save(picture_path)
+    picture_path = app.root_path+"\\static\\assets\\img\\profile_pics\\"+picture_fn
+    # picture_path = os.path.join(current_app.root_path, "/static/assets/img/profile_pics/", picture_fn)
     output_size = (125 , 125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
@@ -134,9 +133,8 @@ def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
-            if file_exists(form.picture.data): 
-                picture_file = save_picture(form.picture.data)
-                current_user.image_file = picture_file 
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file 
         current_user.user_name = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -155,5 +153,6 @@ def search():
     form = SearchForm()
     if form.validate_on_submit():
         results = Note.query.filter(Note.data.like('%' + form.search.data + '%'))
+        print(results)
         return render_template('search.html', user = current_user, form=form, results=results)
     return render_template('search.html', user = current_user, form=form)
