@@ -150,10 +150,10 @@ def account():
 
 
 @user.route('/search', methods=['GET', 'POST'])
+@login_required
 def search():
     form = SearchForm()
     if form.validate_on_submit():
         results = Note.query.filter(Note.data.like('%' + form.search.data + '%'))
-        #print(results)
         return render_template('search.html', user = current_user, form=form, results=results)
     return render_template('search.html', user = current_user, form=form)

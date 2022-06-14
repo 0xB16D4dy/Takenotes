@@ -77,6 +77,7 @@ class UpdateAccountForm(FlaskForm):
     email = StringField('Email',validators=[DataRequired(), Email()])
     picture = FileField('Update Profile Picture', validators=[ FileRequired(),FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
+    search = StringField('search', validators=[DataRequired()])
 
     def validate_username(self, username):
         if username.data != current_user.user_name:
@@ -92,3 +93,6 @@ class UpdateAccountForm(FlaskForm):
 
 class SearchForm(FlaskForm):
     search = StringField('search', validators=[DataRequired()])
+
+class NoteForm(FlaskForm):
+    add_note = TextAreaField('')

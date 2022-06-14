@@ -61,11 +61,10 @@ def create_app():
     app.config["MAIL_PASSWORD"] = PASS
     mail.__init__(app)
 
-    # app.config['UPLOAD_FOLDER']='logs'
     
     
 
     # set the time of a session in 5 minutes
-    app.permanent_session_lifetime = timedelta(minutes=9999999)
+    app.permanent_session_lifetime = timedelta(minutes=5)
 
     return app
