@@ -28,22 +28,32 @@
     </a>
   </div>
   <li class="list-group-item">
-    
-    
-    {{note.data}}
+    {{note.data|safe}}
   </li>
   {% endfor %}
 </ul>
-<form action = "{{url_for('views.home')}}" method="POST">
-  <textarea name="note" id="note" class="form-control"></textarea>
-  <div class="btn-add">
-    <button type="submit" class="btn btn-primary">Add Note</button>
-  </div>
-</form>
 
-<form action = "{{url_for('user.upload_file')}}" method = "POST" 
-    enctype = "multipart/form-data">
-    <input type = "file" name = "file" />
-    <input type = "submit"/>
-</form>
+<div class="note-add">
+  <form action = "{{url_for('views.home')}}" method="POST">
+    <!-- <textarea name="note" id="note" class="form-control"></textarea> -->
+    {{form.hidden_tag()}}
+    <div class="form-control ckeditor">
+      {{form.content}}
+    </div>
+    <div class="btn-add">
+      <button type="submit" class="btn btn-primary">Add Note</button>
+    </div>
+  </form>
+  
+  {{ ckeditor.load() }}
+  {{ ckeditor.config(name='content') }}
+</div>
+
+<div class="note-import">
+  <form action = "{{url_for('user.upload_file')}}" method = "POST" 
+      enctype = "multipart/form-data">
+      <input type = "file" name = "file" />
+      <input type = "submit"/>
+  </form>
+</div>
 {% endblock %}

@@ -159,7 +159,6 @@ def search():
 
 @user.route('/uploadFile', methods=["GET","POST"])
 def upload_file():
-    form = UploadFile()
     if request.method == 'POST':
         f = request.files['file']
         # f = secure_filename(form.file.data.filename)

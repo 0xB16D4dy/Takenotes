@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
+from flask_ckeditor import CKEditor
 from flask_mail import Mail
 
 
@@ -30,11 +31,13 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     Bootstrap(app)
+    #add ckeditor
+    ckeditor = CKEditor(app)
     db.__init__(app)
     
    
     # from .models import Upload
-    from .models import User, Note
+    from .models import User
     create_database(app)
 
 
