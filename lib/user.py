@@ -8,7 +8,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 import secrets
 import os
-from os.path import exists as file_exists
+import base64
+import sys
 
 user = Blueprint("user", __name__)
 
@@ -156,3 +157,20 @@ def search():
         print(results)
         return render_template('search.html', user = current_user, form=form, results=results)
     return render_template('search.html', user = current_user, form=form)
+
+@user.route('/uploadFile', methods=["GET","POST"])
+def upload_file():
+    form = UploadFile()
+    if request.method == 'POST':
+        f = request.files['file']
+        file_string = base64.b64encode(f.read())
+        file_string = base64.b64decode(file_string)
+        file_string = file_string.decode('utf-8')
+        if len(file_string) < 1:
+            flash('Note is too short!', category="danger")
+        else:
+            new_note = Note(data = file_string, user_id = current_user.id)
+            db.session.add(new_note)
+            db.session.commit()
+            flash('Note added!', category="success")
+        return redirect(url_for("views.home"))

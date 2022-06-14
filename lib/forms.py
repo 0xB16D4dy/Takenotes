@@ -94,5 +94,6 @@ class UpdateAccountForm(FlaskForm):
 class SearchForm(FlaskForm):
     search = StringField('search', validators=[DataRequired()])
 
-class NoteForm(FlaskForm):
-    add_note = TextAreaField('')
+class UploadFile(FlaskForm):
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['txt', 'py'])])
+    submit = SubmitField('Update')
