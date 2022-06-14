@@ -55,7 +55,7 @@ def update_note(id):
                     flash('Note update!', category="success")
                     return redirect(url_for("views.home")) 
                 flash("error", category="danger")
-    return render_template("update.html",user = current_user, note_to_update = note_to_update, form=form) 
+    return render_template("update.html",user = current_user, note_to_update = note_to_update) 
 
 
 

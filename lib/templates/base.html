@@ -29,95 +29,105 @@
       href="{{url_for('static', filename = 'assets/css/style.css')}}"
     />
   </head>
-  <body>
-      <header class="header">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="{{ url_for('views.home') }}">TAKE NOTES</a>
-            </div>
-            
-
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <ul class="navbar-nav my-auto">
-              {% if user.is_authenticated %}
-              <!-- ==============================Search================================== -->
-            
-              <li class="nav-item active"> 
-                <a class="nav-link" href="{{url_for('user.search')}}">Search</a> 
-              </li>
-              
-
-              <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('user.account') }}">Account</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a>
-              </li>
-              {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('user.login') }}">Login</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('user.register') }}">
-                  Register
-                </a>
-                <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
-                <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div> -->
-              </li>
-              {% endif %}
-            </ul>
-            <!-- <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-              </form> -->
-          </div>
-        </nav>
-      </header>
-  
-      <main role="main" class="container">
-        
-            {% with messages = get_flashed_messages(with_categories=true) %} 
-              {%if messages %} 
-                {% for cat, mess in messages %}
-                  <div
-                    class="alert alert-{{ cat }} alert-dismissible fade show auth-alert"
-                    role="alert"
+  <body>  
+    <main role="main" class="container">
+      
+          {% with messages = get_flashed_messages(with_categories=true) %} 
+            {%if messages %} 
+              {% for cat, mess in messages %}
+                <div
+                  class="alert alert-{{ cat }} alert-dismissible fade show auth-alert"
+                  role="alert"
+                >
+                  {{ mess }}
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close"
                   >
-                    {{ mess }}
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="alert"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                {% endfor %} 
-              {% endif %} 
-            {% endwith %}
-             <!-- start content -->
-             {% block content %} 
-             {%endblock %}
-             <!-- end content -->
-          
-      </main>
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endfor %} 
+            {% endif %} 
+          {% endwith %}
+            <!-- start content -->
+            {% block content %} 
+            {%endblock %}
+            <!-- end content -->
+        
+    </main>
+  <div class="fix-bottom"></div>
+  <div class="magic-nav">
+    <ul>
+      <li class="list active">
+        <a href="{{ url_for('views.home') }}">
+          <span class="icon">
+            <ion-icon name="home-outline"></ion-icon>
+          </span>
+          <span class="text">Home</span>
+        </a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="list">
+        <a href="#">
+          <span class="icon">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </span>
+          <span class="text">Add</span>
+        </a>
+      </li>
+      
+      <li class="list">
+        <a href="{{url_for('user.search')}}">
+          <span class="icon">
+            <ion-icon name="search-outline"></ion-icon>
+          </span>
+          <span class="text">Search</span>
+        </a>
+      </li>
+      
+      <li class="list">
+        <a href="{{ url_for('user.account') }}">
+          <span class="icon">
+            <ion-icon name="person-outline"></ion-icon>
+          </span>
+          <span class="text">Profile</span>
+        </a>
+      </li>
+      
+      <li class="list">
+        <a href="{{ url_for('user.logout') }}">
+          <span class="icon">
+            <ion-icon name="log-out-outline"></ion-icon>
+          </span>
+          <span class="text">Logout</span>
+        </a>
+      </li>
+      {% else %}
+
+      <li class="list">
+        <a href="{{ url_for('user.login') }}">
+          <span class="icon">
+            <ion-icon name="log-in-outline"></ion-icon>
+          </span>
+          <span class="text">Login</span>
+        </a>
+      </li>
+
+      <li class="list">
+        <a href="{{ url_for('user.register') }}">
+          <span class="icon">
+            <ion-icon name="person-add-outline"></ion-icon>
+          </span>
+          <span class="text">Register</span>
+        </a>
+      </li>
+      {% endif %}
+      <div class="indicator"></div>
+    </ul>
+  </div>
   </body>
   <script
     src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
