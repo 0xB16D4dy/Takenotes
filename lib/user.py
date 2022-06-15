@@ -157,7 +157,7 @@ def search():
         return render_template('search.html', user = current_user, form=form, results=results)
     return render_template('search.html', user = current_user, form=form)
 
-@user.route('/uploadFile', methods=["GET","POST"])
+@user.route('/upload', methods=["GET","POST"])
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
@@ -173,3 +173,4 @@ def upload_file():
             db.session.commit()
             flash('Note added!', category="success")
         return redirect(url_for("views.home"))
+    return render_template('upload.html', user = current_user)

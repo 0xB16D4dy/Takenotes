@@ -280,6 +280,10 @@ input#remember {
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
 
+:root{
+	--clr: #cbd5db;
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -523,4 +527,30 @@ a {
 
 .magic-nav ul li:nth-child(5).active ~ .indicator{
 	transform: translateX(calc(70px * 4));
+}
+
+ion-icon {
+	pointer-events: none;
+}
+
+#chooseFile{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.takeNote{
+	position: fixed;
+	width: 200px;
+	height: 70px;
+	background: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	z-index: 10;
+	bottom: 0;
+	left: 65%;
+	transform: translateX(-50%);
+	font-size: 35px;
 }
