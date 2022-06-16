@@ -2,9 +2,8 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from sqlalchemy import false
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, InputRequired, ValidationError, EqualTo, regexp
-from flask_ckeditor import CKEditorField
 from .models import User
 import re 
 
@@ -100,6 +99,6 @@ class UploadFile(FlaskForm):
     submit = SubmitField('Update')
 
 class NoteForm(FlaskForm):
-    content = CKEditorField('note',validators=[DataRequired() ,Length(min=7)], id='note')
+    content = TextAreaField('note',validators=[DataRequired()], id='note')
     
 

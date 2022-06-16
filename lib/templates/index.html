@@ -21,7 +21,7 @@
       </div>
       
       <div>
-        <h2><a href="{{url_for('views.update_note',id=note.id)}}">{{note.data | truncate(130) | safe}}</a></h2>
+        <h2><a href="{{url_for('views.update_note',id=note.id)}}">{{ note.data | truncate(130) }}</a></h2>
       </div>
     </header>
   </article>
@@ -30,18 +30,13 @@
   
 <div class="note-add">
   <form action = "{{url_for('views.home')}}" method="POST">
-    <!-- <textarea name="note" id="note" class="form-control"></textarea> -->
-    {{form.hidden_tag()}}
-    <div class="form-control ckeditor">
-      {{form.content}}
-    </div>
+      {{form.hidden_tag()}}
+      {{form.content(class="form-control")}}
     <div class="btn-add">
       <button type="submit" class="btn btn-primary ">Add Note</button>
     </div>
   </form>
   
-  {{ ckeditor.load() }}
-  {{ ckeditor.config(name='content') }}
 </div>
 
 

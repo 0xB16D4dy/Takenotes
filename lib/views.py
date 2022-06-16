@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, jsonify, url_for, send_from_directory,current_app
+from flask import Blueprint, flash, redirect, render_template, request, jsonify, url_for, send_from_directory,current_app, escape
 from flask_login import current_user, login_required
 from bs4 import BeautifulSoup
 from .models import Note
@@ -16,7 +16,7 @@ views = Blueprint("views", __name__)
 def home():
     form = NoteForm()
     if form.validate_on_submit():
-        note = form.content.data
+        note = format(escape(form.content.data))
         if note:
             new_note = Note(data = note, user_id = current_user.id)
             db.session.add(new_note)
@@ -45,7 +45,8 @@ def update_note(id):
     note_to_update = Note.query.get(id)
     plaintext = BeautifulSoup(note_to_update.data)
     if request.method == 'POST':
-        note = request.form.get('note')
+        note = format(escape(request.form.get('note')))
+        # note = request.form.get('note')
         if note_to_update:
             if note_to_update.user_id == current_user.id:
                 if note != "":

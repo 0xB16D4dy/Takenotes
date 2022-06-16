@@ -2,7 +2,7 @@ from .models import User, Note
 from . import db, mail, app
 from .forms import *
 from PIL import Image
-from flask import Blueprint, redirect, render_template, request, flash, session, url_for, current_app
+from flask import Blueprint, redirect, render_template, request, flash, session, url_for, current_app, escape
 from flask_mail import Message
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -164,7 +164,8 @@ def upload_file():
         # f = secure_filename(form.file.data.filename)
         file_string = base64.b64encode(f.read())
         file_string = base64.b64decode(file_string)
-        file_string = file_string.decode('utf-8')
+        file_string = format(escape(file_string.decode('utf-8')))
+        
         if len(file_string) < 1:
             flash('Note is too short!', category="danger")
         else:
