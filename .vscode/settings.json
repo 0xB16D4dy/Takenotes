@@ -1,7 +1,0 @@
-{
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": false,
-    "cSpell.words": [
-        "callout"
-    ]
-}
