@@ -39,7 +39,7 @@ def create_app():
     create_database(app)
 
 
-    from lib.user import user
+    from src.user import user
     # . goị từ thằng cha
     from .views import views
     app.register_blueprint(user)
