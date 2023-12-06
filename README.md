@@ -18,7 +18,7 @@ hoặc
 ```Bash
 virtualenv venv -p C:\Users\[username]\AppData\Local\Programs\Python\Python39\python.exe
 ```
-Với cách này ta sẽ chỉ định phiên bản python hiện tại mà ta đang sài bằng cờ **-p**
+Với cách này ta sẽ chỉ định phiên bản python hiện tại mà ta đang sử dụng với cờ **-p**
 
 ## Sử dụng
 Sau khi cài đặt xong ta có thể tiến hành chạy app ở mode debug bằng cách gõ lệnh
