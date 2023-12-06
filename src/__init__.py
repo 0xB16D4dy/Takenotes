@@ -20,7 +20,7 @@ EMAIL = os.environ.get("EMAIL_USER")
 PASS = os.environ.get("EMAIL_PASS")
 
 def create_database(app):
-    if not os.path.exists("lib/"+ DB_NAME):
+    if not os.path.exists("src/"+ DB_NAME):
         db.create_all(app=app)
         print("Create DB!")
 

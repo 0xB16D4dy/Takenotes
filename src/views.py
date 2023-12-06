@@ -10,8 +10,8 @@ from .forms import *
 views = Blueprint("views", __name__)
 
 
-@views.route('/home', methods=["GET","POST"])
-@views.route('/', methods=["GET","POST"])
+@views.route('/home', methods=["GET"])
+@views.route('/', methods=["GET"])
 @login_required
 def home():
     form = NoteForm()
